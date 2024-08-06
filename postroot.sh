@@ -60,6 +60,18 @@ echo "<INFO> Plugin Data folder is: $PDATA"
 echo "<INFO> Plugin Log folder (on RAMDISK!) is: $PLOG"
 echo "<INFO> Plugin CONFIG folder is: $PCONFIG"
 
+echo "<INFO> Installing mbusd"
+if [[ $(uname -m) == aarch64]]; then
+  echo "<INFO> Installing mbusd on aarch64"
+  git clone https://github.com/3cky/mbusd.git mbusd
+  cd mbusd
+  mkdir -p build && cd build
+  cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+  make
+  make install
+  cd ..
+fi
+
 echo "<INFO> Updating systemd service config"
 cp dpkg/mbusd.service /lib/systemd/system/mbusd\@.service
 echo "<INFO> Reloading systemd config"
